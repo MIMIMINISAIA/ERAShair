@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdmController;
 use App\Http\Controllers\agendaController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\FormaDePagamentoController;
 use App\Http\Controllers\ProfissionalController;
 use App\Http\Controllers\ServicoController;
 use Illuminate\Http\Request;
@@ -87,6 +88,10 @@ Route::get('adm/pesquisarPor/{id}', [AdmController::class, 'pesquisarPorId']);
 Route::put('adm/atualizar', [AdmController::class, 'update']);
 Route::delete('excluir/adm/{id}', [AdmController::class, 'excluir']);
 Route::post('adm/esqueciSenha', [AdmController::class, 'esqueciSenha']);
+
+//pagamento
+Route::post('adm/pagamento/cadastro',[FormaDePagamentoController::class, 'store']);
+Route::delete('adm/pagamento/excluir',[FormaDePagamentoController::class,'excluir']);
 
 
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pagamento;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class FormaDePagamentoController extends Controller
 {
@@ -60,6 +61,25 @@ class FormaDePagamentoController extends Controller
         return response()->json([
             'status' => true,
             'message' => "Cadastro atualizado"
+        ]);
+    }
+
+    public function esqueciSenha(Request $request)
+    {
+        $pagamento = Pagamento::where('cpf', '=', $request->cpf)->where('email', '=', $request->email)->first();
+
+        if (isset($pagamento)) {
+            $pagamento->senha = Hash::make($pagamento->senha);
+            $pagamento->update();
+            return response()->json([
+                'status' => true,
+                'message' => 'senha redefinida.'
+            ]);
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'não foi possivel alterar a senha'
         ]);
     }
 }

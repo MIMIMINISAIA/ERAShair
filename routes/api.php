@@ -76,7 +76,7 @@ Route::put('adm/cliente/atualizar', [ClienteController::class, 'update']);
 Route::post('adm/cliente/esqueciSenha', [ClienteController::class, 'esqueciSenhaCliente']);
 
 Route::post('adm/profissional/cadastro', [ProfissionalController::class, 'store']);
-Route::delete('adm/excluirProfissional/{id}', [ProfissionalController::class, 'excluir']);
+Route::delete('adm/excluir/Profissional/{id}', [ProfissionalController::class, 'excluir']);
 Route::put('adm/profissional/atualizar', [ProfissionalController::class, 'update']);
 Route::post('adm/profissional/esqueciSenha', [ProfissionalController::class, 'esqueciSenha']);
 
@@ -86,7 +86,7 @@ Route::post('adm/Cadastro',[AdmController::class, 'CadastroAdm']);
 Route::get('adm/retornarTodos', [AdmController::class, 'retornarTodos']);
 Route::get('adm/pesquisarPor/{id}', [AdmController::class, 'pesquisarPorId']);
 Route::put('adm/atualizar', [AdmController::class, 'update']);
-Route::delete('excluir/adm/{id}', [AdmController::class, 'excluir']);
+Route::delete('adm/excluir/{id}', [AdmController::class, 'excluir']);
 Route::post('adm/esqueciSenha', [AdmController::class, 'esqueciSenha']);
 
 //pagamento

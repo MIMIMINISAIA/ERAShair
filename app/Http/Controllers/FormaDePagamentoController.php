@@ -64,22 +64,22 @@ class FormaDePagamentoController extends Controller
         ]);
     }
 
-    public function esqueciSenha(Request $request)
+    public function esquecipassword(Request $request)
     {
         $pagamento = Pagamento::where('cpf', '=', $request->cpf)->where('email', '=', $request->email)->first();
 
         if (isset($pagamento)) {
-            $pagamento->senha = Hash::make($pagamento->senha);
+            $pagamento->password = Hash::make($pagamento->password);
             $pagamento->update();
             return response()->json([
                 'status' => true,
-                'message' => 'senha redefinida.'
+                'message' => 'password redefinida.'
             ]);
         }
 
         return response()->json([
             'status' => false,
-            'message' => 'não foi possivel alterar a senha'
+            'message' => 'não foi possivel alterar a password'
         ]);
     }
 }

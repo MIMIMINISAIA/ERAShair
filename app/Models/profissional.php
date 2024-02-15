@@ -23,7 +23,7 @@ class profissional extends Model
         'bairro',
         'cep',
         'complemento',
-        'senha',
+        'password',
         'salario',
 
     ];

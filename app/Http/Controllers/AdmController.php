@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\admFormRequest;
 use App\Models\Adm;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AdmController extends Controller
@@ -25,7 +26,7 @@ class AdmController extends Controller
             'bairro' => $request->bairro,
             'cep' => $request->cep,
             'complemento' => $request->complemento,
-            'senha' => Hash::make($request->senha),
+            'password' => Hash::make($request->password),
 
         ]);
 
@@ -34,6 +35,53 @@ class AdmController extends Controller
             "message" => "adm Cadastrado com sucesso",
             "data" => $adm
         ], 200);
+    }
+
+    public function login(Request $request)
+    {
+        try {
+            if (Auth::guard('adms')->attempt([
+                'nome' => $request->nome,
+                'celular' => $request->celular,
+                'email' => $request->email,
+                'cpf' => $request->cpf,
+                'dataNascimento' => $request->dataNascimento,
+                'cidade' => $request->cidade,
+                'estado' => $request->estado,
+                'pais' => $request->pais,
+                'rua' => $request->rua,
+                'numero' => $request->numero,
+                'bairro' => $request->bairro,
+                'cep' => $request->cep,
+                'complemento' => $request->complemento,
+                'password' => $request->password
+            ])) {
+                $user = Auth::guard('adms')->user();
+
+                $token = $user->createToken($request->server(
+                    'HTTP_USER_AGENT',
+                    ['adms']
+                ))->plainTextToken;
+
+                return response()->json([
+                    'status' => true,
+                    'message' => 'login efetuado com sucesso',
+                    'token' => $token
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'credenciais incorretas'
+
+                ]);
+            }
+        } catch (\throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+
+            ], 500);
+        }
     }
 
     public function retornarTodos()
@@ -111,8 +159,8 @@ class AdmController extends Controller
         if (isset($request->complemento)) {
             $adm->complemento = $request->complemento;
         }
-        if (isset($request->senha)) {
-            $adm->senha = $request->senha;
+        if (isset($request->password)) {
+            $adm->password = $request->password;
         }
 
         $adm->update();
@@ -143,24 +191,22 @@ class AdmController extends Controller
         ]);
     }
 
-    public function esqueciSenhaAdm(Request $request)
+    public function esquecipasswordAdm(Request $request)
     {
         $adm = adm::where('cpf', $request->cpf)->where('email', $request->email)->first();
 
         if (isset($adm)) {
-            $adm->senha = Hash::make($adm->senha);
+            $adm->password = Hash::make($adm->password);
             $adm->update();
             return response()->json([
                 'status' => true,
-                'message' => 'senha redefinida.'
+                'message' => 'password redefinida.'
             ]);
         }
 
         return response()->json([
             'status' => false,
-            'message' => 'não foi possivel alterar a senha'
+            'message' => 'não foi possivel alterar a password'
         ]);
     }
-
-   
 }

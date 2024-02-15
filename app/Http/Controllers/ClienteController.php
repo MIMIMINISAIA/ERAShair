@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ClientesFormRequest;
 use App\Models\clientes;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
 
@@ -26,7 +27,7 @@ class ClienteController extends Controller
             'bairro' => $request->bairro,
             'cep' => $request->cep,
             'complemento' => $request->complemento,
-            'senha' => Hash::make($request->senha),
+            'password' => Hash::make($request->password),
 
         ]);
 
@@ -35,6 +36,53 @@ class ClienteController extends Controller
             "message" => "Cliente Cadastrado com sucesso",
             "data" => $clientes
         ], 200);
+    }
+
+    public function login(Request $request)
+    {
+        try {
+            if (Auth::guard('clientes')->attempt([
+                'nome' => $request->nome,
+                'celular' => $request->celular,
+                'email' => $request->email,
+                'cpf' => $request->cpf,
+                'dataNascimento' => $request->dataNascimento,
+                'cidade' => $request->cidade,
+                'estado' => $request->estado,
+                'pais' => $request->pais,
+                'rua' => $request->rua,
+                'numero' => $request->numero,
+                'bairro' => $request->bairro,
+                'cep' => $request->cep,
+                'complemento' => $request->complemento,
+                'password' => $request->password
+            ])) {
+                $user = Auth::guard('clientes')->user();
+
+                $token = $user->createToken($request->server(
+                    'HTTP_USER_AGENT',
+                    ['adms']
+                ))->plainTextToken;
+
+                return response()->json([
+                    'status' => true,
+                    'message' => 'login efetuado com sucesso',
+                    'token' => $token
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'credenciais incorretas'
+
+                ]);
+            }
+        } catch (\throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+
+            ], 500);
+        }
     }
 
     public function retornarTodos()
@@ -184,8 +232,8 @@ class ClienteController extends Controller
         if (isset($request->complemento)) {
             $cliente->complemento = $request->complemento;
         }
-        if (isset($request->senha)) {
-            $cliente->senha = $request->senha;
+        if (isset($request->password)) {
+            $cliente->password = $request->password;
         }
 
         $cliente->update();
@@ -216,7 +264,7 @@ class ClienteController extends Controller
         ]);
     }
 
-    public function esqueciSenha(Request $request)
+    public function esquecipassword(Request $request)
     {
         $cliente = clientes::where('cpf', '=', $request->cpf)->first();
 
@@ -228,7 +276,7 @@ class ClienteController extends Controller
             ]);
         }
 
-        $cliente->senha = Hash::make($cliente->cpf);
+        $cliente->password = Hash::make($cliente->cpf);
 
         $cliente->update();
 
@@ -266,22 +314,22 @@ class ClienteController extends Controller
             ->deleteFileAfterSend(true);
     }
 
-    public function esqueciSenhaCliente(Request $request)
+    public function esquecipasswordCliente(Request $request)
     {
         $cliente = clientes::where('cpf', $request->cpf)->where('email', $request->email)->first();
 
         if (isset($cliente)) {
-            $cliente->senha = Hash::make($cliente->senha);
+            $cliente->password = Hash::make($cliente->password);
             $cliente->update();
             return response()->json([
                 'status' => true,
-                'message' => 'senha redefinida.'
+                'message' => 'password redefinida.'
             ]);
         }
 
         return response()->json([
             'status' => false,
-            'message' => 'não foi possivel alterar a senha'
+            'message' => 'não foi possivel alterar a password'
         ]);
     }
 }

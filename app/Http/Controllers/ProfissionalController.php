@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProfissionalFormRequest;
 use App\Models\profissional;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
 
@@ -26,7 +27,7 @@ class ProfissionalController extends Controller
             'bairro' => $request->bairro,
             'cep' => $request->cep,
             'complemento' => $request->complemento,
-            'senha' => Hash::make($request->senha),
+            'password' => Hash::make($request->password),
             'salario' => $request->salario,
 
         ]);
@@ -36,6 +37,54 @@ class ProfissionalController extends Controller
             "message" => "Profissional Cadastrado com sucesso",
             "data" => $profissional
         ], 200);
+    }
+
+    public function login(Request $request)
+    {
+        try {
+            if (Auth::guard('profissionals')->attempt([
+                'nome' => $request->nome,
+                'celular' => $request->celular,
+                'email' => $request->email,
+                'cpf' => $request->cpf,
+                'dataNascimento' => $request->dataNascimento,
+                'cidade' => $request->cidade,
+                'estado' => $request->estado,
+                'pais' => $request->pais,
+                'rua' => $request->rua,
+                'numero' => $request->numero,
+                'bairro' => $request->bairro,
+                'cep' => $request->cep,
+                'complemento' => $request->complemento,
+                'salario' => $request->salario,
+                'password' => $request->password
+            ])) {
+                $user = Auth::guard('profissionals')->user();
+
+                $token = $user->createToken($request->server(
+                    'HTTP_USER_AGENT',
+                    ['adms']
+                ))->plainTextToken;
+
+                return response()->json([
+                    'status' => true,
+                    'message' => 'login efetuado com sucesso',
+                    'token' => $token
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'credenciais incorretas'
+
+                ]);
+            }
+        } catch (\throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+
+            ], 500);
+        }
     }
 
     public function retornarTodos()
@@ -183,8 +232,8 @@ class ProfissionalController extends Controller
         if (isset($request->complemento)) {
             $profissional->complemento = $request->complemento;
         }
-        if (isset($request->senha)) {
-            $profissional->senha = $request->senha;
+        if (isset($request->password)) {
+            $profissional->password = $request->password;
         }
         if (isset($request->salario)) {
             $profissional->salario = $request->salario;
@@ -245,22 +294,22 @@ class ProfissionalController extends Controller
             ->deleteFileAfterSend(true);
     }
 
-    public function esqueciSenha(Request $request)
+    public function esquecipassword(Request $request)
     {
         $profissionals = profissional::where('cpf', '=', $request->cpf)->where('email', '=', $request->email)->first();
 
         if (isset($profissionals)) {
-            $profissionals->senha = Hash::make($profissionals->senha);
+            $profissionals->password = Hash::make($profissionals->password);
             $profissionals->update();
             return response()->json([
                 'status' => true,
-                'message' => 'senha redefinida.'
+                'message' => 'password redefinida.'
             ]);
         }
 
         return response()->json([
             'status' => false,
-            'message' => 'não foi possivel alterar a senha'
+            'message' => 'não foi possivel alterar a password'
         ]);
     }
 }

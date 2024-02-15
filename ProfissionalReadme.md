@@ -17,7 +17,7 @@ nesse projeto profissionais vão ter a liberdade de se cadastrar para poder pres
 11. bairro
 12. cep
 13. complemento
-14. senha
+14. password
 15. Salario
 
 ## Funções possiveis
@@ -25,9 +25,9 @@ nesse projeto profissionais vão ter a liberdade de se cadastrar para poder pres
 1. Cadastrar
 2. Editar
 3. Excluir
-4. Recuperar senha
+4. Recuperar password
 5. Pesquisar por cpf
 6. retornar todos
 7. pesquisar por id
 8. pesquisar por nome
-9. esqueci senha
+9. esqueci password

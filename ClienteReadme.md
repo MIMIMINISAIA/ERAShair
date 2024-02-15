@@ -17,16 +17,16 @@ nesse projeto clientes pode se cadastrar e escolher os serviços que querem rece
 11. bairro
 12. cep
 13. complemento
-14. senha
+14. password
 
 ## Funções possiveis
 
 1. Cadastrar
 2. Editar
 3. Excluir
-4. Recuperar senha
+4. Recuperar password
 5. Pesquisar por cpf
 6. retornar todos
 7. pesquisar por id
 8. pesquisar por nome
-9. esqueci senha
+9. esqueci password

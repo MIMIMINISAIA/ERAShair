@@ -29,7 +29,7 @@ class ClienteSeeder extends Seeder
                 'bairro'  => 'bairro' . $i,
                 'cep' => '12345678',
                 'complemento' => 'complemento' . $i,
-                'senha' => Hash::make('123456'),
+                'password' => Hash::make('123456'),
 
             ]);
         }

@@ -38,7 +38,7 @@ class ProfissionalFormRequest extends FormRequest
             'bairro' => 'required|max:100',
             'cep' => 'required|max:8|min:8',
             'complemento' => 'max:150',
-            'senha' => 'required',
+            'password' => 'required',
             'salario' => 'required|decimal:2',
 
 
@@ -88,7 +88,7 @@ class ProfissionalFormRequest extends FormRequest
             'cep.max' => 'Cep deve conter no maximo 8 caracteres',
             'cep.min' => 'Cep deve conter no minimo 8 caracteres',
             'Complemento.max' => 'Complemento deve conter no maximo 150 caracteres',
-            'senha.required' => 'Senha obrigatorio',
+            'password.required' => 'password obrigatorio',
             'salario.required' => 'salario obrigatorio',
             'salario.decimal' => 'formato invalido',
 

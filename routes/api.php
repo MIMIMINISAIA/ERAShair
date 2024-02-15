@@ -40,10 +40,10 @@ Route::post('cliente/procurarCelular', [ClienteController::class, 'pesquisarPorC
 Route::post('cliente/procurarEmail', [ClienteController::class, 'pesquisarPorEmail']);
 Route::delete('excluir/cliente/{id}', [ClienteController::class, 'excluir']);
 Route::put('cliente/atualizar', [ClienteController::class, 'update']);
-Route::post('cliente/esqueciSenha', [ClienteController::class, 'esqueciSenha']);
+Route::post('cliente/esqueciPassword', [ClienteController::class, 'esquecipassword']);
 Route::get('cliente/pesquisarPor/{id}', [ClienteController::class, 'pesquisarPorId']);
 Route::get('cliente/Exportar/csv', [ClienteController::class, 'exportarCsv']);
-Route::post('cliente/esqueciSenha', [ClienteController::class, 'esqueciSenhaCliente']);
+Route::post('cliente/esquecipassword', [ClienteController::class, 'esquecipasswordCliente']);
 
 //profissional
 Route::post('profissional/cadastro', [ProfissionalController::class, 'store']);
@@ -56,7 +56,7 @@ Route::delete('excluirProfissional/{id}', [ProfissionalController::class, 'exclu
 Route::put('profissional/atualizar', [ProfissionalController::class, 'update']);
 Route::get('profissional/pesquisarPor/{id}', [ProfissionalController::class, 'pesquisarPorId']);
 Route::get('profissional/Exportar/csv', [ProfissionalController::class, 'exportarCsv']);
-Route::post('profissional/esqueciSenha', [ProfissionalController::class, 'esqueciSenha']);
+Route::post('profissional/esquecipassword', [ProfissionalController::class, 'esquecipassword']);
 
 //agenda
 Route::post('cadastroAgenda', [agendaController::class, 'store']);
@@ -73,12 +73,12 @@ Route::delete('adm/servuico/delete/{id}', [ServicoController::class, 'excluir'])
 Route::post('adm/cliente/cadastro', [ClienteController::class, 'store']);
 Route::delete('adm/excluir/cliente/{id}', [ClienteController::class, 'excluir']);
 Route::put('adm/cliente/atualizar', [ClienteController::class, 'update']);
-Route::post('adm/cliente/esqueciSenha', [ClienteController::class, 'esqueciSenhaCliente']);
+Route::post('adm/cliente/esquecipassword', [ClienteController::class, 'esquecipasswordCliente']);
 
 Route::post('adm/profissional/cadastro', [ProfissionalController::class, 'store']);
 Route::delete('adm/excluir/Profissional/{id}', [ProfissionalController::class, 'excluir']);
 Route::put('adm/profissional/atualizar', [ProfissionalController::class, 'update']);
-Route::post('adm/profissional/esqueciSenha', [ProfissionalController::class, 'esqueciSenha']);
+Route::post('adm/profissional/esquecipassword', [ProfissionalController::class, 'esquecipassword']);
 
 
 //adm 2
@@ -87,11 +87,16 @@ Route::get('adm/retornarTodos', [AdmController::class, 'retornarTodos']);
 Route::get('adm/pesquisarPor/{id}', [AdmController::class, 'pesquisarPorId']);
 Route::put('adm/atualizar', [AdmController::class, 'update']);
 Route::delete('adm/excluir/{id}', [AdmController::class, 'excluir']);
-Route::post('adm/esqueciSenha', [AdmController::class, 'esqueciSenha']);
+Route::post('adm/esquecipassword', [AdmController::class, 'esquecipassword']);
 
 //pagamento
 Route::post('adm/pagamento/cadastro',[FormaDePagamentoController::class, 'store']);
 Route::delete('adm/pagamento/excluir',[FormaDePagamentoController::class,'excluir']);
+
+//login
+Route::post('/login',[AdmController::class, 'login']);
+Route::post('/login',[ClienteController::class, 'login']);
+Route::post('/login',[ProfissionalController::class, 'login']);
 
 
 
